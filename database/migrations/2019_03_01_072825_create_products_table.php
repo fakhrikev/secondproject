@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
                 ->onUpdate('cascade');
             $table->string('unit_price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

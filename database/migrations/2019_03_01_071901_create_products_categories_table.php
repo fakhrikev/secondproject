@@ -18,6 +18,7 @@ class CreateProductsCategoriesTable extends Migration
             $table->string('category_name');
             $table->boolean('visible');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

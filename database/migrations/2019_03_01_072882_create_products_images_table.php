@@ -24,6 +24,7 @@ class CreateProductsImagesTable extends Migration
             $table->string('product_image_url');
             $table->boolean('main_image');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
