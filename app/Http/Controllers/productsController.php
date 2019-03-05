@@ -54,12 +54,12 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getByID($id)
+    public function GetByID($id)
     {
         $products =  products::find($id);
         return response()->json(
             [
-                'message' => 'success',
+                'messages' => 'success',
                 'data'=> $products
             ], 200
         );
