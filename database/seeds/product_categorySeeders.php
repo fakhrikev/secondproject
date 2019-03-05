@@ -16,7 +16,7 @@ class product_categorySeeders extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             DB::table('products_categories')->insert([
-                'category_name' => $faker->name,
+                'category_name' => $faker->word,
                 'visible' => rand()%2,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
