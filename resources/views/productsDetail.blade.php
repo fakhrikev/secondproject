@@ -2,10 +2,11 @@
 
 @section('content')
     <div>
-        <table id="product_detail">
+        <table id="product_detail" border="1" cellpadding="12px">
                 <thead>
                     <td>ID</td>
                     <td>SKU</td>
+                    <td>Image</td>
                     <td>Product Name</td>
                     <td>Category Name</td>
                     <td>Description</td>
@@ -25,10 +26,20 @@
                 url: '/api/Product/GetByID/{{$id}}',
                 type: 'GET',
                 success: function (json) {
-                    console.log(json);
                     var product = json.data;
+                    $.ajax({
+                        url: '/api/Product/GetWithParam',
+                        type: 'GET',
+                        success: function (images) {
+                            $.each(images.data, function (i, image) {
+
+                            });
+                        }
+
+                    });
                         $('#product_detail > tbody').append('<tr><td>'+ product.id
                                                             + '</td><td>' + product.sku
+                                                            + '</td><td>' + '<img src = "'+ product.image_url+'">'
                                                             + '</td><td>' + product.name
                                                             + '</td><td>' + product.category_name
                                                             + '</td><td>' + product.description
