@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\products;
+use App\products_category;
 use Illuminate\Http\Request;
 
 class productsController extends Controller
@@ -15,7 +16,7 @@ class productsController extends Controller
 
     public function GetAll()
     {
-        $product =  products::select('name')->get();
+        $product =  products::select('id', 'name')->get();
 
         return response()->json([
             'messages' => 'success',
@@ -57,6 +58,10 @@ class productsController extends Controller
     public function GetByID($id)
     {
         $products =  products::find($id);
+        $category = products_category::find($products->category_id);
+
+        $products->setAttribute('category_name', $category->category_name);
+
         return response()->json(
             [
                 'messages' => 'success',
