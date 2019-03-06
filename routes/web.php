@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Route::get('/Product/Detail/{id}/', function ($id) {
+    return view('productsDetail', compact('id'));
 });
