@@ -2,9 +2,10 @@
 
 @section('content')
         <div>
-            <table>
+            <table border="1">
                 <thead>
-                    Product Name
+                <td>Image</td>
+                <td>Product Name</td>
                 </thead>
                 <tbody id="product"></tbody>
             </table>
@@ -22,9 +23,12 @@
                    $.each(json.data, function (i, product) {
                       $('#product').append('<tr>'
                                                 + '<td>'
-                                                    + '<a href="{{url("Product/Detail/")}}/'+product.id+'">'+product.name+'</a>'
+                                                + '<img height="100px" width="100px" src = "'+ product.main_image+'">'
                                                 + '</td>'
-                                        + '</tr>');
+                                                + '<td>'
+                                                + '<a href="{{url("Product/Detail/")}}/'+product.id+'">'+product.name+'</a>'
+                                                + '</td>'
+                                                + '</tr>');
                     })
                 }
             })
