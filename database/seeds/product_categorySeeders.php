@@ -14,7 +14,7 @@ class product_categorySeeders extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             DB::table('products_categories')->insert([
                 'category_name' => $faker->word,
                 'visible' => rand()%2,
