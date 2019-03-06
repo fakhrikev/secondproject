@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\products;
 use App\products_category;
+use App\products_image;
 use Illuminate\Http\Request;
 
 class productsController extends Controller
@@ -17,6 +18,11 @@ class productsController extends Controller
     public function GetAll()
     {
         $product =  products::select('id', 'name')->get();
+        $image = products_image::where('main_image', true)->get();
+
+        foreach ($product as $p){
+            $p->setAttribute('main_image', $image->where('product_id', $p->id)->first()->product_image_url);
+        }
 
         return response()->json([
             'messages' => 'success',
@@ -59,7 +65,9 @@ class productsController extends Controller
     {
         $products =  products::find($id);
         $category = products_category::find($products->category_id);
+        $image = products_image::find($products->id);
 
+        $products->setAttribute('image_url', $image->product_image_url);
         $products->setAttribute('category_name', $category->category_name);
 
         return response()->json(
