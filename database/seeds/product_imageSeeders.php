@@ -14,12 +14,13 @@ class product_imageSeeders extends Seeder
     {
         $faker = Faker::create();
 
-        for($i = 0; $i < 20; $i++) {
-            for ($j = 0; $j < 4; $j++){
+        for($i = 0; $i < 50; $i++) {
+            for ($j = 0; $j < 3; $j++){
+                $isMain = $j == 0? true : false;
                 DB::table('products_images')->insert([
-                    'product_id' => rand(1, 20),
+                    'product_id' => $i+1,
                     'product_image_url' => $faker->imageUrl(),
-                    'main_image' => false,
+                    'main_image' => $isMain,
                     'created_at' => \Carbon\Carbon::now(),
                     'updated_at' => \Carbon\Carbon::now(),
                 ]);
