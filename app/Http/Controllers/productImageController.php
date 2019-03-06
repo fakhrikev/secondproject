@@ -17,7 +17,7 @@ class productImageController extends Controller
 
     public function GetWithParam($id)
     {
-        $product = products_image::where('product_id', $id);
+        $product = products_image::where('product_id', $id)->get();
         return response()->json([
             'data' => $product,
             'message' => 'success'
