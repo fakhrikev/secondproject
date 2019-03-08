@@ -8,6 +8,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        table th, td {
+            border: 2px solid black;
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
 
     <!-- Scripts -->
     <script type="text/javascript" src="{{asset('js/jquery.js')}}"></script>
