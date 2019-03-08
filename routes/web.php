@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::get('/Product/Detail/{id}/', function ($id) {
     return view('productsDetail', compact('id'));
 });
+
+Route::get('/Product/Edit/{id}/', function ($id) {
+    return view('editProduct', compact('id'));
+});
