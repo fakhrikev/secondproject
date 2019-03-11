@@ -2,7 +2,7 @@
 
 @section('content')
     <div>
-        <table id="product_detail" border="1" cellpadding="12px">
+        <table class="product_detail">
                 <thead>
                     <td>Image</td>
                     <td>ID</td>
@@ -32,9 +32,9 @@
                         type: 'GET',
                         success: function (images) {
                             $.each(images.data, function (i, image) {
-                                $('#product_detail > tbody').append('<img height="100px" width="100px" src = "'+ image.product_image_url+'">');
+                                $('.product_detail > tbody').append('<img height="100px" width="100px" src = "'+ image.product_image_url+'">');
                             });
-                            $('#product_detail > tbody').append(
+                            $('.product_detail > tbody').append(
                                                             + '<td>' + ''
                                                             + '</td><td>' + product.id
                                                             + '</td><td>' + product.sku
@@ -47,7 +47,7 @@
                         }
                     });
                 }
-            })
+            });
         });
     </script>
 
