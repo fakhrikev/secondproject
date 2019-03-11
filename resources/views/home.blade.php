@@ -1,13 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+        <div class="button">
+            <button onclick="location.href='{{url('/Product/Create/')}}'" type="button">Add Product</button>
+        </div>
+
         <div>
-            <table id="product">
+            <table class="product">
                 <thead>
-                <td>Image</td>
-                <td>Product Name</td>
-                <td>Edit</td>
-                <td>Delete</td>
+                    <td>Image</td>
+                    <td>Product Name</td>
+                    <td>Action</td>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -42,18 +45,17 @@
                type: 'GET',
                success: function (json) {
                    $.each(json.data, function (i, product) {
-                      $('#product > tbody').append('<tr><td>'
+                      $('.product > tbody').append('<tr><td>'
                                                 + '<img height="100px" width="100px" src = "'+ product.main_image+'">'
                                                 + '</td><td>'
                                                 + '<a href="{{url("Product/Detail/")}}/'+product.id+'">'+product.name+'</a>'
                                                 + '</td><td>'
                                                 + '<input type="button" value="Edit" onclick="editProduct('+product.id+')">'
-                                                + '</td><td>'
                                                 + '<input type="button" value="Delete" onclick="deleteProduct('+product.id+')">'
                                                 + '</td></tr>');
-                    })
+                    });
                 }
-            })
+            });
         });
     </script>
 
