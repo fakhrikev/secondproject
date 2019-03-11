@@ -9,10 +9,25 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
-        table th, td {
+        .product td{
             border: 2px solid black;
             padding: 15px;
             text-align: left;
+        }
+
+        .product_detail td{
+            border: 2px solid black;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .edit td{
+            padding: 5px;
+            text-align: left;
+        }
+
+        .button{
+            padding: 10px;
         }
     </style>
 
