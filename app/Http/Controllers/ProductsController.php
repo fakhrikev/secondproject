@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\products;
-use App\products_category;
-use App\products_image;
+use App\Products;
+use App\ProductsCategory;
+use App\ProductsImage;
 use Illuminate\Http\Request;
 
-class productsController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function GetAll()
+    public function getAll()
     {
-        $product =  products::select('id', 'name')->get();
-        $image = products_image::where('main_image', true)->get();
+        $product =  Products::select('id', 'name')->get()->orderBy('id');
+        $image = ProductsImage::where('main_image', true)->get();
 
         foreach ($product as $p){
             $p->setAttribute('main_image', $image->where('product_id', $p->id)->first()->product_image_url);
@@ -37,19 +37,22 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function Store(Request $request)
+    public function store(Request $request)
     {
-        $product = new products();
-        $product->sku=$request->sku;
-        $product->name= $request->name;
+        $product = new Products();
+        $product->sku = $request->sku;
+        $product->name = $request->name;
         $product->description = $request->description;
-        $product ->unit_price = $request->unit_price;
-        $product ->category_id = $request->category_id;
+        $product->unit_price = $request->unit_price;
+        $product->category_id = $request->category_id;
         $product->save();
+
+        $response = $product->id;
 
         return response()->json(
             [
-                'messages' => "success"
+                'messages' => "success",
+                'data' => $response
             ], 200
         );
     }
@@ -61,11 +64,11 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function GetByID($id)
+    public function getByID($id)
     {
-        $products =  products::find($id);
-        $category = products_category::find($products->category_id);
-        $image = products_image::find($products->id);
+        $products =  Products::find($id);
+        $category = ProductsCategory::find($products->category_id);
+        $image = ProductsImage::find($products->id);
 
         $products->setAttribute('image_url', $image->product_image_url);
         $products->setAttribute('category_name', $category->category_name);
@@ -86,14 +89,14 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function Update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $product = products::find($id);
-        $product->sku=$request->sku;
-        $product->name= $request->name;
+        $product = Products::find($id);
+        $product->sku = $request->sku;
+        $product->name = $request->name;
         $product->description = $request->description;
-        $product ->unit_price = $request->unit_price;
-        $product ->category_id = $request->category_id;
+        $product->unit_price = $request->unit_price;
+        $product->category_id = $request->category_id;
         $product->save();
 
         return response()->json(
@@ -110,9 +113,9 @@ class productsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function Delete($id)
+    public function delete($id)
     {
-        products::find($id)->delete();
+        Products::find($id)->delete();
 
             return response()->json([
                 'messages' => "success"
