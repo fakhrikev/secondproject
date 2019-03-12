@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
-class productSeeders extends Seeder
+class ProductSeeders extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class productSeeders extends Seeder
         $faker = Faker::create();
 
         for($i = 0; $i < 50; $i++){
-        DB::table('products')->insert([
+        DB::table('Products')->insert([
             'sku' => str_random(10),
             'name' => $faker->word,
             'description' => $faker->sentence,

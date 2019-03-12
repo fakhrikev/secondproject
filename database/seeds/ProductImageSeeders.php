@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
-class product_imageSeeders extends Seeder
+class ProductImageSeeders extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class product_imageSeeders extends Seeder
         for($i = 0; $i < 50; $i++) {
             for ($j = 0; $j < 3; $j++){
                 $isMain = $j == 0? true : false;
-                DB::table('products_images')->insert([
+                DB::table('ProductsImages')->insert([
                     'product_id' => $i+1,
                     'product_image_url' => $faker->imageUrl(),
                     'main_image' => $isMain,

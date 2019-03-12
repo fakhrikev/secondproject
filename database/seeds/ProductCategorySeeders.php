@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
-class product_categorySeeders extends Seeder
+class ProductCategorySeeders extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class product_categorySeeders extends Seeder
         $faker = Faker::create();
 
         for ($i = 0; $i < 10; $i++) {
-            DB::table('products_categories')->insert([
+            DB::table('ProductsCategories')->insert([
                 'category_name' => $faker->word,
                 'visible' => rand()%2,
                 'created_at' => \Carbon\Carbon::now(),
