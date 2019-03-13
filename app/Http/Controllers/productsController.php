@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Products;
-use App\ProductsCategory;
-use App\ProductsImage;
+use App\products;
+use App\products_category;
+use App\products_image;
 use Illuminate\Http\Request;
 
 class productsController extends Controller
@@ -17,8 +17,8 @@ class productsController extends Controller
 
     public function GetAll()
     {
-        $product = Products::select('id', 'name')->get();
-        $image = ProductsImage::where('main_image', true)->get();
+        $product =  products::select('id', 'name')->get();
+        $image = products_image::where('main_image', true)->get();
 
         foreach ($product as $p){
             $p->setAttribute('main_image', $image->where('product_id', $p->id)->first()->product_image_url);
@@ -39,20 +39,17 @@ class productsController extends Controller
 
     public function Store(Request $request)
     {
-        $product = new Products();
-        $product->sku = $request->sku;
-        $product->name = $request->name;
+        $product = new products();
+        $product->sku=$request->sku;
+        $product->name= $request->name;
         $product->description = $request->description;
-        $product->unit_price = $request->unit_price;
-        $product->category_id = $request->category_id;
+        $product ->unit_price = $request->unit_price;
+        $product ->category_id = $request->category_id;
         $product->save();
-
-        $response = $product->id;
 
         return response()->json(
             [
-                'messages' => "success",
-                'data' => $response
+                'messages' => "success"
             ], 200
         );
     }
@@ -66,9 +63,9 @@ class productsController extends Controller
 
     public function GetByID($id)
     {
-        $products = Products::find($id);
-        $category = ProductsCategory::find($products->category_id);
-        $image = ProductsImage::find($products->id);
+        $products =  products::find($id);
+        $category = products_category::find($products->category_id);
+        $image = products_image::find($products->id);
 
         $products->setAttribute('image_url', $image->product_image_url);
         $products->setAttribute('category_name', $category->category_name);
@@ -91,12 +88,12 @@ class productsController extends Controller
 
     public function Update(Request $request, $id)
     {
-        $product = Products::find($id);
-        $product->sku = $request->sku;
-        $product->name = $request->name;
+        $product = products::find($id);
+        $product->sku=$request->sku;
+        $product->name= $request->name;
         $product->description = $request->description;
-        $product->unit_price = $request->unit_price;
-        $product->category_id = $request->category_id;
+        $product ->unit_price = $request->unit_price;
+        $product ->category_id = $request->category_id;
         $product->save();
 
         return response()->json(
@@ -115,7 +112,7 @@ class productsController extends Controller
 
     public function Delete($id)
     {
-        Products::find($id)->delete();
+        products::find($id)->delete();
 
             return response()->json([
                 'messages' => "success"

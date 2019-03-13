@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ProductsImage;
+use App\products_image;
 use Illuminate\Http\Request;
 
 class productImageController extends Controller
@@ -17,7 +17,7 @@ class productImageController extends Controller
 
     public function GetWithParam($id)
     {
-        $product = productsImage::where('product_id', $id)->get();
+        $product = products_image::where('product_id', $id)->get();
         return response()->json([
             'data' => $product,
             'message' => 'success'
@@ -32,37 +32,12 @@ class productImageController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function Store(Request $request, $product_id)
+    public function Store(Request $request)
     {
-        if($request->hasFile('main_image'))
-        {
-            $image = $request->file('main_image');
-            $main_image_name = time() . '-' . $image->getClientOriginalName();
-            $imagePath = 'productImages/';
-            $image->move($imagePath,$main_image_name);
-
-            $prod_image = new productsImage();
-            $prod_image->product_id = $product_id;
-            $prod_image->product_image_url = $main_image_name;
-            $prod_image->main_image = true;
-            $prod_image->save();
-        }
-
-        if($request->hasFile('product_images'))
-        {
-            foreach ($request->file('product_images') as $image)
-            {
-                $other_images = time() . '-' . $image->getClientOriginalName();
-                $imagePath = 'productImages/';
-                $image->move($imagePath, $other_images);
-
-                $image = new productsImage();
-                $image->product_id = $product_id;
-                $image->product_image_url = $other_images;
-                $image->main_image = false;
-                $image->save();
-            }
-        }
+        $prod_image = new products_image();
+        $prod_image->product_id = $request->product_id;
+        $prod_image->product_image_url = $request->product_image_url;
+        $prod_image->save();
 
         return response()->json([
            'data' => $prod_image,
@@ -71,11 +46,11 @@ class productImageController extends Controller
     }
 
     public  function  SetMainImage(Request $request, $id){
-        $image = productsImage::find($id);
+        $image = products_image::find($id);
         $image->main_image = $request->main_image;
         $image->save();
 
-        $otherImages = productsImage::where('product_id', $image->product_id)->where('id', '!=', $image->product_id)->get();
+        $otherImages = products_image::where('product_id', $image->product_id)->where('id', '!=', $image->product_id)->get();
         foreach($otherImages as $other){
             $other->main_image = false;
             $other->save();
@@ -95,7 +70,7 @@ class productImageController extends Controller
      */
     public function Delete($id)
     {
-        productsImage::find($id)->delete();
+        products_image::find($id)->delete();
 
         return response()->json([
             'messages' => "success"
