@@ -7,7 +7,7 @@ use App\ProductsCategory;
 use App\ProductsImage;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class productsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getAll()
+    public function GetAll()
     {
-        $product =  Products::select('id', 'name')->get()->orderBy('id');
+        $product = Products::select('id', 'name')->get();
         $image = ProductsImage::where('main_image', true)->get();
 
         foreach ($product as $p){
@@ -37,7 +37,7 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request)
+    public function Store(Request $request)
     {
         $product = new Products();
         $product->sku = $request->sku;
@@ -64,9 +64,9 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getByID($id)
+    public function GetByID($id)
     {
-        $products =  Products::find($id);
+        $products = Products::find($id);
         $category = ProductsCategory::find($products->category_id);
         $image = ProductsImage::find($products->id);
 
@@ -89,7 +89,7 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request, $id)
+    public function Update(Request $request, $id)
     {
         $product = Products::find($id);
         $product->sku = $request->sku;
@@ -113,7 +113,7 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function delete($id)
+    public function Delete($id)
     {
         Products::find($id)->delete();
 
