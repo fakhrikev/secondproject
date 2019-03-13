@@ -15,10 +15,14 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/Product/Detail/{id}/', function ($id) {
+Route::get('/product/detail/{id}/', function ($id) {
     return view('productsDetail', compact('id'));
 });
 
-Route::get('/Product/Edit/{id}/', function ($id) {
+Route::get('/product/edit/{id}/', function ($id) {
     return view('editProduct', compact('id'));
+});
+
+Route::get('/product/create/', function(){
+    return view('createProduct');
 });
