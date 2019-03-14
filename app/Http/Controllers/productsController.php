@@ -6,6 +6,9 @@ use App\products;
 use App\products_category;
 use App\products_image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+
 
 class productsController extends Controller
 {
@@ -19,6 +22,14 @@ class productsController extends Controller
     {
         $product =  products::select('id', 'name')->get();
         $image = products_image::where('main_image', true)->get();
+
+        foreach ($image as $i){
+            $str = $i->product_image_url;
+            if(!str_contains($str, "lorem")){
+                $newstr = "/productImages/".$str;
+                $i->product_image_url = $newstr;
+            }
+        }
 
         foreach ($product as $p){
             $p->setAttribute('main_image', $image->where('product_id', $p->id)->first()->product_image_url);
@@ -39,17 +50,35 @@ class productsController extends Controller
 
     public function Store(Request $request)
     {
+        $validator = Validator::make($request->all(),
+            [
+                'sku' => 'required|max: 10',
+                'name' => 'required|max: 20',
+                'description' => 'required|max: 1000',
+                'unit_price' => 'required|numeric',
+                'category_id' => 'required|integer'
+            ]
+        );
+
+        if($validator->fails()){
+            return redirect('product/create')->withErrors($validator)
+                ->withInput(Input::all());
+        }
+
         $product = new products();
-        $product->sku=$request->sku;
-        $product->name= $request->name;
+        $product->sku = $request->sku;
+        $product->name = $request->name;
         $product->description = $request->description;
-        $product ->unit_price = $request->unit_price;
-        $product ->category_id = $request->category_id;
+        $product->unit_price = $request->unit_price;
+        $product->category_id = $request->category_id;
         $product->save();
+
+        $response = $product->id;
 
         return response()->json(
             [
-                'messages' => "success"
+                'messages' => "success",
+                'data' => $response
             ], 200
         );
     }
@@ -88,6 +117,21 @@ class productsController extends Controller
 
     public function Update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(),
+            [
+                'sku' => 'required | max: 10',
+                'name' => 'required | max: 20',
+                'description' => 'required | max: 1000',
+                'unit_price' => 'required | numeric',
+                'category_id' => 'required | integer'
+            ]
+        );
+
+        if($validator->fails()){
+            return redirect('product/create')->withErrors($validator)
+                ->withInput(Input::all());
+        }
+
         $product = products::find($id);
         $product->sku=$request->sku;
         $product->name= $request->name;
@@ -96,9 +140,12 @@ class productsController extends Controller
         $product ->category_id = $request->category_id;
         $product->save();
 
+        $response = $product->id;
+
         return response()->json(
             [
-                'messages' => "success"
+                'messages' => "success",
+                'data' => $response
             ], 200
         );
     }
@@ -112,10 +159,20 @@ class productsController extends Controller
 
     public function Delete($id)
     {
-        products::find($id)->delete();
+        $product = products::find($id);
 
-            return response()->json([
-                'messages' => "success"
+        if($product->exists()){
+            $product->delete();
+            $data = "Product has been deleted";
+        }
+
+        else{
+            $data = "Product is not exists";
+        }
+
+        return response()->json([
+                'messages' => "success",
+                'data' => $data,
                 ],200
             );
     }
