@@ -17,9 +17,18 @@ class productImageController extends Controller
 
     public function GetWithParam($id)
     {
-        $product = products_image::where('product_id', $id)->get();
+        $image = products_image::where('product_id', $id)->get();
+
+        foreach ($image as $i){
+            $str = $i->product_image_url;
+            if(!str_contains($str, "lorem")){
+                $newstr = "/productImages/".$str;
+                $i->product_image_url = $newstr;
+            }
+        }
+
         return response()->json([
-            'data' => $product,
+            'data' => $image,
             'message' => 'success'
         ], 200);
 
@@ -32,15 +41,39 @@ class productImageController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function Store(Request $request)
+    public function Store(Request $request, $product_id)
     {
-        $prod_image = new products_image();
-        $prod_image->product_id = $request->product_id;
-        $prod_image->product_image_url = $request->product_image_url;
-        $prod_image->save();
+        if($request->hasFile('main_image'))
+        {
+            $image = $request->file('main_image');
+            $main_image_name = time() . '-' . $image->getClientOriginalName();
+            $imagePath = 'productImages/';
+            $image->move($imagePath,$main_image_name);
+
+            $prod_image = new products_image();
+            $prod_image->product_id = $product_id;
+            $prod_image->product_image_url = $main_image_name;
+            $prod_image->main_image = true;
+            $prod_image->save();
+        }
+
+        if($request->hasFile('product_images'))
+        {
+            foreach ($request->file('product_images') as $image)
+            {
+                $other_images = time() . '-' . $image->getClientOriginalName();
+                $imagePath = 'productImages/';
+                $image->move($imagePath, $other_images);
+
+                $image = new products_image();
+                $image->product_id = $product_id;
+                $image->product_image_url = $other_images;
+                $image->main_image = false;
+                $image->save();
+            }
+        }
 
         return response()->json([
-           'data' => $prod_image,
             'message' => 'success'
         ], 200);
     }
@@ -70,10 +103,20 @@ class productImageController extends Controller
      */
     public function Delete($id)
     {
-        products_image::find($id)->delete();
+        $image = products_image::find($id);
+
+        if($image->exists()){
+            $image->delete();
+            $data = "Image(s) has been deleted";
+        }
+
+        else{
+            $data = "Product is not exists";
+        }
 
         return response()->json([
-            'messages' => "success"
+            'messages' => "success",
+            'data' => $data,
         ],200
         );
     }
