@@ -21,12 +21,41 @@
             text-align: left;
         }
 
-        .edit td{
-            padding: 5px;
-            text-align: left;
+        .edit-page{
+            display: inline-block;
         }
 
-        .button{
+        .form {
+            margin-top: 50px;
+            margin-left: 200px;;
+            padding: 50px;
+            text-align: left;
+            border-style: ridge;
+        }
+
+        .panel-heading {
+            font-size: 18px;
+        }
+
+        .button-add{
+            padding: 20px;
+        }
+
+        .button-edit{
+            padding: 20px;
+        }
+
+        .checked {
+            opacity: 0.5;
+        }
+
+        .images{
+            display: inline-block;
+            padding-left: 30px;
+            padding-right: 50px;
+        }
+
+        .image{
             padding: 10px;
         }
     </style>
@@ -36,8 +65,6 @@
 </head>
 <body>
         @yield('content')
-
-
 </body>
 </html>
 @yield('script')
